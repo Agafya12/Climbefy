@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Climbefy</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="icon" href="web_tasks_clipboard_icon_262490.ico" type="image/x-icon">
+</head>
+<div id="climbCelebration">🎉 Ny klättring loggad!</div>
+<body>
+
+<h1>🧗 Climbefy</h1>
+<p>Logga varje led du klarar!</p>
+
+<div class="select-wrapper">
+  <select id="pageSelector">
+    <option value="logs">📒 Loggar</option>
+    <option value="leaderboard">🏆 Topplista</option>
+  </select>
+</div>
+
+<div id="logsPage">
+
+<div class="card">
+  <button id="authToggleBtn">🔐 Logga in / Skapa konto</button>
+
+  <div id="authPanel" style="display:none; margin-top:15px;">
+    <p>Skapa ett konto eller logga in för att spara dina klättringar.</p>
+
+    <input id="username" placeholder="Användarnamn">
+    <input id="password" type="password" placeholder="Lösenord">
+
+    <div style="margin-top:10px;">
+      <button onclick="register()">Skapa konto</button>
+      <button onclick="login()">Logga in</button>
+    </div>
+  </div>
+
+  <p id="userStatus" style="margin-top:10px;"></p>
+</div>
+
+
+
+<div class="card">
+  <div style="margin-bottom:10px;">
+  <div class="select-wrapper">
+    <select id="locationSelect">
+      <option value="">Välj plats</option>
+      <option value="KlättercentretS">Klättercentret - Sisjön</option>
+      <option value="Klätterlabbet">Klätterlabbet</option>
+      <option value="KlättercentretP">Klättercentret - Partille</option>
+      <option value="Klätterdomen">Klätterdomen</option>
+      <option value="BackaBoulder">Backa Boulder</option>
+      <option value="Utomhus">Utomhus</option>
+    </select>
+    </div>
+  </div>
+  <h2>Välj grad</h2>
+  <div id="buttons"></div>
+  <button class="undo" onclick="undoLastClimb()">↩️ Ångra senaste</button>
+</div>
+
+
+<div class="card">
+  <h2>👤 Mina klättringar</h2>
+  <ul id="myLog"></ul>
+</div>
+
+<div class="card">
+  <h2>🧗 Senaste klättringar (alla)</h2>
+  <ul id="climbLog"></ul>
+</div>
+
+<div class="card">
+  <h2>🌍 Andras klättringar</h2>
+  <div class="select-wrapper">
+    <select id="userFilter"></select>
+  </div>
+  <ul id="otherLog"></ul>
+</div>
+</div>
+
+<!--Other page-->
+<div id="leaderboardPage" style="display:none;">
+  <div class="card">
+    <h2>🏆 Topplista – Flest klättringar</h2>
+    <ol id="leaderboardList"></ol>
+  </div>
+</div>
+
+
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+
+<script src="app.js">
+</script>
+
+
+</body>
+</html>

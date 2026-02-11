@@ -1,0 +1,149 @@
+body {
+  font-family: 'Inter', sans-serif;
+  background: linear-gradient(135deg, #1f2937, #111827);
+  background-attachment: fixed;   /* gör att bakgrunden sitter fast */
+  background-repeat: no-repeat;   /* förhindrar upprepning */
+  background-size: cover;         /* fyller hela ytan */
+  color: #f3f4f6;
+  text-align: center;
+  margin: 0;
+  padding: 20px;
+  min-height: 100vh;              /* minst hela skärmen */
+    }
+
+    h1 {
+      margin-bottom: 10px;
+    }
+
+    .card {
+      background: #1f2937;
+      border-radius: 12px;
+      padding: 20px;
+      margin: 20px auto;
+      max-width: 600px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    }
+
+    button {
+      margin: 6px;
+      padding: 10px 14px;
+      font-size: 15px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      background: #374151;
+      color: white;
+      transition: transform 0.1s, background 0.2s;
+      font-weight: bold;
+    }
+
+    button:hover {
+      background: #4b5563;
+      transform: scale(1.05);
+      filter: brightness(1.15);
+    }
+
+    .undo {
+      background: #dc2626;
+    }
+
+    .undo:hover {
+      background: #ef4444;
+    }
+
+    .scoreboard {
+      line-height: 1.6;
+    }
+
+    .total {
+      margin-top: 10px;
+      font-size: 20px;
+      font-weight: bold;
+      color: #fbbf24;
+    }
+
+    ul {
+      padding-left: 20px;
+    }
+
+    li {
+      margin-bottom: 4px;
+    }
+
+    select {
+  background-color: #374151;
+  color: #f3f4f6;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 40px 10px 12px;
+  font-size: 15px;
+  cursor: pointer;
+  appearance: none;          /* tar bort standardpil */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  position: relative;
+}
+
+/* Wrapper så vi kan ha egen pil */
+.select-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.select-wrapper::after {
+  content: "▾";
+  font-size: 14px;
+  color: #f3f4f6;
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+select:hover {
+  filter: brightness(1.15);
+}
+
+#authPanel input {
+  display: block;
+  width: 80%;
+  max-width: 250px;
+  margin: 8px auto;
+  padding: 8px;
+  border-radius: 6px;
+  border: none;
+}
+p {
+  color: #d1d5db;        /* mjuk ljusgrå istället för vit */
+  font-size: 15px;
+  line-height: 1.6;
+  margin: 6px 0;
+  letter-spacing: 0.2px;
+}
+#userStatus {
+  font-weight: 500;
+  color: #93c5fd;   /* mjuk blå ton som signalerar info */
+}
+
+@keyframes popFade {
+  0%   { transform: translate(-50%, -50%) scale(0.5); opacity: 0; }
+  50%  { transform: translate(-50%, -50%) scale(1.2); opacity: 1; }
+  100% { transform: translate(-50%, -50%) scale(1); opacity: 0; }
+}
+
+#climbCelebration {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #16a34a;
+  color: white;
+  padding: 20px 30px;
+  border-radius: 12px;
+  font-size: 22px;
+  font-weight: bold;
+  pointer-events: none;
+  opacity: 0;
+  z-index: 9999;
+}
