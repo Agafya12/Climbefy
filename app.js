@@ -33,6 +33,30 @@ const firebaseConfig = {
 
     const locationSelect = document.getElementById("locationSelect");
 
+const gradeColors = {
+
+  "5c":  "#16a34a",
+
+  "6a":  "#3b82f6",
+  "6a+": "#2563eb",
+
+  "6b":  "#d42f06",  // cyan
+  "6b+": "#b20808",  // mörkare cyan
+
+  "6c":  "#f7a355",  // lila
+  "6c+": "#ce7222",  // mörkare lila
+
+  "7a":  "#ec4899",
+  "7a+": "#db2777",
+
+  "7b":  "#f9ea16",
+  "7b+": "#e6ea0c",
+
+  "7c":  "#e6ef44",
+  "7c+": "#26b91c",
+
+  "8a":  "#26dc26"
+};
 
 authToggleBtn.addEventListener("click", () => {
   const isHidden = authPanel.style.display === "none";
@@ -47,12 +71,7 @@ grades.forEach(grade => {
   btn.textContent = grade;
   btn.onclick = () => addClimb(grade);
 
-  const level = grade.charAt(0);
-
-  if (level === "5") btn.style.background = "#16a34a";     // grön
-  if (level === "6") btn.style.background = "#2563eb";     // blå
-  if (level === "7") btn.style.background = "#7c3aed";     // lila
-  if (level === "8") btn.style.background = "#dc2626";     // röd
+  btn.style.background = getGradeColor(grade);
 
   buttonDiv.appendChild(btn);
 });
@@ -371,16 +390,9 @@ function loadMyChart() {
 }
 
 function getGradeColor(grade) {
-
-  const level = grade.charAt(0);
-
-  if (level === "5") return "#16a34a";
-  if (level === "6") return "#2563eb";
-  if (level === "7") return "#7c3aed";
-  if (level === "8") return "#dc2626";
-
-  return "#6b7280";
+  return gradeColors[grade] || "#6b7280";
 }
+
 
 const gradeOrder = [
   "5c",
