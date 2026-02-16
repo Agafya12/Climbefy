@@ -7,9 +7,12 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap" rel="stylesheet">
   <link rel="icon" href="web_tasks_clipboard_icon_262490.ico" type="image/x-icon">
 </head>
-<div id="climbCelebration">🎉 Ny klättring loggad!</div>
 <body>
+<button id="profileBtn" class="profile-btn" onclick="openMyProfile()">
+  👤 Profil
+</button>
 
+<div id="climbCelebration">🎉 Ny klättring loggad!</div>
 <h1>🧗 Climbefy</h1>
 <p>Logga varje led du klarar!</p>
 
@@ -53,9 +56,9 @@
       <option value="Klätterdomen">Klätterdomen</option>
       <option value="BackaBoulder">Backa Boulder</option>
       <option value="Utomhus">Utomhus</option>
-      <option value="Utomhus">Kilter Board</option>
-      <option value="Utomhus">Moon Board</option>
-      <option value="Utomhus">Övrigt</option>
+      <option value="KilterBoard">Kilter Board</option>
+      <option value="MoonBoard">Moon Board</option>
+      <option value="Övrigt">Övrigt</option>
     </select>
     </div>
   </div>
@@ -95,6 +98,53 @@
     <ol id="hardestLeaderboard"></ol>
   </div>
 </div>
+
+<div id="profilePage" style="display:none;">
+
+  <button onclick="closeProfile()">← Tillbaka</button>
+
+  <div class="card">
+
+    <h2 id="profileName"></h2>
+
+    <div id="profileViewMode">
+
+      <p id="profileAgeDisplay"></p>
+      <p id="profileGymDisplay"></p>
+
+      <button id="editProfileBtn" onclick="enterEditMode()" style="display:none;">
+        Redigera profil
+      </button>
+
+    </div>
+
+    <div id="profileEditMode" style="display:none;">
+
+      <input id="editAge" placeholder="Ålder">
+      <input id="editGym" placeholder="Hemmagym">
+
+      <button onclick="saveProfile()">Spara</button>
+      <button onclick="cancelEdit()">Avbryt</button>
+
+      <p id="profileSavedMsg"></p>
+
+    </div>
+
+  </div>
+
+  <div class="card">
+
+    <h3>Klarade leder</h3>
+    <ul id="profileClimbs"></ul>
+
+  </div>
+
+</div>
+
+
+
+
+
 
 
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>

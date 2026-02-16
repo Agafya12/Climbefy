@@ -32,6 +32,9 @@ const firebaseConfig = {
     const authPanel = document.getElementById("authPanel");
 
     const locationSelect = document.getElementById("locationSelect");
+  
+    const profilePage = document.getElementById("profilePage");
+
 
 const gradeColors = {
 
@@ -84,20 +87,18 @@ pageSelector.addEventListener("change", () => {
 
   if (pageSelector.value === "leaderboard") {
 
-    logsPage.style.display = "none";
-    leaderboardPage.style.display = "block";
-
+    showPage(leaderboardPage);
     loadLeaderboard();
-    loadHardestLeaderboard(); // ← NY
+    loadHardestLeaderboard();
 
   } else {
 
-    logsPage.style.display = "block";
-    leaderboardPage.style.display = "none";
+    showPage(logsPage);
 
   }
 
 });
+
 
 function loadLeaderboard() {
   db.collection("climbs").get().then(snapshot => {
@@ -172,7 +173,12 @@ function loadClimbs() {
       docs.forEach(doc => {
         const data = doc.data();
         const li = document.createElement("li");
-        li.textContent = `${data.date} – ${data.grade} – 📍 ${data.location} (${data.user})`;
+        li.innerHTML = `
+          ${data.date} – ${data.grade} – 📍 ${data.location}
+          (<span class="clickableUser" onclick="openProfile('${data.user}')">
+            ${data.user}
+          </span>)
+        `;
         logList.appendChild(li);
       });
     });
@@ -295,7 +301,9 @@ function register() {
     if (doc.exists) {
       alert("Användarnamnet är redan taget");
     } else {
-      db.collection("users").doc(username).set({ password }).then(() => {
+      db.collection("users").doc(username).set({password: password,
+  age: "",
+  homeGym: "" }).then(() => {
         alert("Konto skapat!");
       });
     }
@@ -442,4 +450,183 @@ function loadHardestLeaderboard() {
 
   });
 
+}
+
+function openProfile(username) {
+
+  showPage(profilePage);
+
+  document.getElementById("profileName").textContent = username;
+
+  loadProfileInfo(username);
+  loadProfileClimbs(username);
+
+}
+
+
+function closeProfile() {
+
+  if (pageSelector.value === "leaderboard") {
+    showPage(leaderboardPage);
+  } else {
+    showPage(logsPage);
+  }
+
+}
+
+
+function loadProfileInfo(username) {
+
+  db.collection("users").doc(username).get()
+    .then(doc => {
+
+      const data = doc.data() || {};
+
+      document.getElementById("profileName").textContent = username;
+
+      document.getElementById("profileAgeDisplay").textContent =
+        "Ålder: " + (data.age || "okänd");
+
+      document.getElementById("profileGymDisplay").textContent =
+        "Hemmagym: " + (data.homeGym || "okänt");
+
+      // fyll edit fields
+      document.getElementById("editAge").value =
+        data.age || "";
+
+      document.getElementById("editGym").value =
+        data.homeGym || "";
+
+      // visa redigera knapp endast för egen profil
+      const editBtn =
+        document.getElementById("editProfileBtn");
+
+      if (username === currentUser)
+        editBtn.style.display = "inline-block";
+      else
+        editBtn.style.display = "none";
+
+      // starta alltid i view mode
+      cancelEdit();
+
+    });
+
+}
+
+
+
+function saveProfile() {
+
+  if (!currentUser) return;
+
+  const age = document.getElementById("editAge").value;
+  const homeGym = document.getElementById("editGym").value;
+
+  db.collection("users")
+    .doc(currentUser)
+    .set({
+      age: age,
+      homeGym: homeGym
+    }, { merge: true })
+    .then(() => {
+
+      const msg = document.getElementById("profileSavedMsg");
+
+      msg.textContent = "Profil sparad!";
+      msg.style.color = "#16a34a";
+
+      // gå tillbaka till view mode
+      cancelEdit();
+
+      // uppdatera visningsdata
+      loadProfileInfo(currentUser);
+
+      // ta bort meddelandet efter 2 sek
+      setTimeout(() => {
+        msg.textContent = "";
+      }, 2000);
+
+    });
+
+}
+
+
+function loadProfileClimbs(username) {
+
+  db.collection("climbs")
+    .where("user", "==", username)
+    .orderBy("timestamp", "desc")
+    .get()
+    .then(snapshot => {
+
+      const list = document.getElementById("profileClimbs");
+      list.innerHTML = "";
+
+      snapshot.forEach(doc => {
+
+        const data = doc.data();
+
+        const li = document.createElement("li");
+
+        li.textContent =
+          `${data.grade} – 📍 ${data.location} – ${data.date}`;
+
+        list.appendChild(li);
+
+      });
+
+    });
+
+}
+
+function openMyProfile() {
+
+  if (!currentUser) {
+    alert("Logga in först");
+    return;
+  }
+
+  openProfile(currentUser);
+
+}
+
+
+function enterEditMode() {
+
+  document.getElementById("profileViewMode").style.display = "none";
+  document.getElementById("profileEditMode").style.display = "block";
+
+}
+
+function cancelEdit() {
+
+  document.getElementById("profileEditMode").style.display = "none";
+  document.getElementById("profileViewMode").style.display = "block";
+
+}
+
+function showPage(page) {
+
+  logsPage.style.display = "none";
+  leaderboardPage.style.display = "none";
+  profilePage.style.display = "none";
+
+  page.style.display = "block";
+
+  window.scrollTo({
+    top: 0,
+    behavior: "instant"
+  });
+
+}
+
+
+showPage(logsPage);
+
+updateUserStatus();
+loadUserList();
+loadClimbs();
+
+if (currentUser) {
+  loadMyChart();
 }
